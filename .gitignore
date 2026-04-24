@@ -16,6 +16,7 @@ __pycache__/
 *.egg-info/
 dist/
 build/
+.pyc
 
 # =========================
 # IDE / Editor
@@ -24,12 +25,14 @@ build/
 .idea/
 *.swp
 *.swo
+*.sublime-*
 
 # =========================
 # OS Files
 # =========================
 .DS_Store
 Thumbs.db
+.directory
 
 # =========================
 # YOLO / AI Models (VERY IMPORTANT)
@@ -38,23 +41,30 @@ Thumbs.db
 *.onnx
 *.engine
 *.tflite
+models/
 
 # =========================
 # YOLO Outputs
 # =========================
 runs/
 results/
+exp*/
+detect/
 
 # =========================
 # Uploaded / Generated Files
 # =========================
 static/uploads/
 static/results/
+temp/
+tmp/
 
 # =========================
 # Environment Variables
 # =========================
 .env
+.env.local
+.env.*.local
 
 # =========================
 # Jupyter
@@ -67,6 +77,7 @@ static/results/
 # =========================
 .pytest_cache/
 .coverage
+htmlcov/
 
 # =========================
 # DATASETS (CRITICAL — prevents huge repo)
@@ -76,23 +87,47 @@ static/results/
 *.jpg
 *.jpeg
 *.png
+*.gif
+*.bmp
+*.tiff
 *.txt
 *.xml
 *.json
+*.yaml
+*.yml
+*.csv
 
 # YOLO dataset folders
 *.yolov8/
+datasets/
+data/
 
 # Specific folders seen in your project
-Hijab Detection.v2i.yolov8/
+Hijab*Detection*/
 Lanyard*.yolov8/
 Shoes*.yolov8/
 collar*.yolov8/
-formal and non formal shoes.v1i.yolov8/
-ktm-final.v1i.yolov8/
-
-# Test folders
+formal*shoes*/
+ktm-final*/
 test_images/
 
+# =========================
 # Logs
+# =========================
 *.log
+logs/
+
+# =========================
+# Cache & Temp
+# =========================
+*.cache
+*.tmp
+*.bak
+*~
+
+# =========================
+# Project-specific
+# =========================
+.mypy_cache/
+.dmypy.json
+dmypy.json
