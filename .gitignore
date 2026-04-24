@@ -1,0 +1,98 @@
+# =========================
+# Virtual Environment
+# =========================
+.venv/
+venv/
+env/
+
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# OS Files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# YOLO / AI Models (VERY IMPORTANT)
+# =========================
+*.pt
+*.onnx
+*.engine
+*.tflite
+
+# =========================
+# YOLO Outputs
+# =========================
+runs/
+results/
+
+# =========================
+# Uploaded / Generated Files
+# =========================
+static/uploads/
+static/results/
+
+# =========================
+# Environment Variables
+# =========================
+.env
+
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/
+*.ipynb
+
+# =========================
+# Testing
+# =========================
+.pytest_cache/
+.coverage
+
+# =========================
+# DATASETS (CRITICAL — prevents huge repo)
+# =========================
+
+# All dataset images & labels
+*.jpg
+*.jpeg
+*.png
+*.txt
+*.xml
+*.json
+
+# YOLO dataset folders
+*.yolov8/
+
+# Specific folders seen in your project
+Hijab Detection.v2i.yolov8/
+Lanyard*.yolov8/
+Shoes*.yolov8/
+collar*.yolov8/
+formal and non formal shoes.v1i.yolov8/
+ktm-final.v1i.yolov8/
+
+# Test folders
+test_images/
+
+# Logs
+*.log

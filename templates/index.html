@@ -1,0 +1,326 @@
+<!-- templates/index.html (FULL MODIFIED) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SRD Intelligence System</title>
+
+  <!-- CSS (your real path: static/css/style.css) -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  <!-- Small extra styling for preview + live stream area -->
+  <style>
+    .file-meta {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      display: none;
+    }
+    .file-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .file-name {
+      font-size: 13px;
+      color: rgba(248,250,252,0.9);
+      word-break: break-all;
+    }
+    .file-clear {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(248,250,252,0.9);
+      padding: 6px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .file-clear:hover {
+      border-color: rgba(99,102,241,0.45);
+    }
+    .preview-wrap {
+      width: 100%;
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.25);
+    }
+    .preview-img {
+      width: 100%;
+      max-height: 260px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* Live stream wrapper (keeps your "video-placeholder" style) */
+    .live-wrap {
+      display: none;
+      margin-bottom: 20px;
+    }
+    .live-img {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 16px 30px rgba(0,0,0,0.35);
+      display: block;
+    }
+
+    /* Secondary button (since your CSS has btn-primary, but not btn-secondary styles) */
+    .btn-secondary {
+      width: 100%;
+      padding: 14px;
+      background: rgba(255,255,255,0.06);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn-secondary:hover {
+      border-color: rgba(99, 102, 241, 0.4);
+      transform: scale(1.01);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="background-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <main class="app-container">
+
+    <!-- HEADER -->
+    <header class="glass-header">
+      <div class="brand">
+        <div class="logo-sq">
+          <div class="inner-dot"></div>
+        </div>
+        <span class="brand-name">SRD <span class="thin">Detect</span></span>
+      </div>
+
+      <nav class="status-indicator">
+        <span class="pulse"></span> System Active
+      </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+      <h1>Smart SRD Analysis</h1>
+      <p>Advanced neural network processing for real-time SRD identification.</p>
+    </section>
+
+    <!-- MAIN GRID -->
+    <div class="main-grid">
+
+      <!-- =========================
+           STATIC IMAGE UPLOAD
+      ========================== -->
+      <div class="glass-card">
+        <div class="card-head">
+          <span class="icon">📸</span>
+          <h3>Static Analysis</h3>
+        </div>
+
+        <p class="card-desc">
+          Upload a student image to evaluate SRD compliance
+          (collar, lanyard, and shoes).
+        </p>
+
+        <form method="POST" enctype="multipart/form-data" class="upload-zone">
+          <input type="file" name="image" id="file-upload" accept="image/*" hidden required>
+
+          <label for="file-upload" class="drop-area" id="drop-area">
+            <span class="upload-icon">↑</span>
+            <span class="text-main" id="drop-title">Choose a file</span>
+            <span class="text-sub" id="drop-sub">or drag and drop here</span>
+          </label>
+
+          <!-- Preview + file name -->
+          <div class="file-meta" id="file-meta">
+            <div class="file-row">
+              <div class="file-name" id="file-name">No file selected</div>
+              <button type="button" class="file-clear" id="clear-btn">Clear</button>
+            </div>
+
+            <div class="preview-wrap">
+              <img id="preview-img" class="preview-img" alt="Selected image preview">
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary" id="analyze-btn">
+            Analyze Image
+          </button>
+        </form>
+      </div>
+
+      <!-- =========================
+           LIVE STREAM (WEBCAM)
+      ========================== -->
+      <div class="glass-card">
+        <div class="card-head">
+          <span class="icon">🎥</span>
+          <h3>Live Stream</h3>
+        </div>
+
+        <p class="card-desc">Real-time inference via webcam.</p>
+
+        <!-- Placeholder shown when camera is OFF -->
+        <div class="video-placeholder" id="video-placeholder">
+          <div class="scan-line"></div>
+          <span>Camera is Off</span>
+        </div>
+
+        <!-- Live stream shown when camera is ON -->
+        <div class="live-wrap" id="live-wrap">
+          <img id="video-stream" class="live-img" src="" alt="Live Webcam Stream">
+        </div>
+
+        <button class="btn-primary" type="button" id="btn-camera">
+          Initialize Camera
+        </button>
+
+        <button class="btn-secondary" type="button" id="btn-camera-switch" style="margin-top: 10px; display:none;">
+          Switch Camera Index (0/1)
+        </button>
+      </div>
+
+    </div>
+
+    <!-- RESULTS -->
+    <section class="results-area">
+      <div class="results-card">
+
+        <div class="res-info">
+          <h4>Analysis Result</h4>
+
+          {% if result %}
+            {% if "COMPLIANT" in result %}
+              <div class="status-badge success">
+                <span class="icon">✔</span> {{ result }}
+              </div>
+            {% else %}
+              <div class="status-badge idle">
+                <span class="icon">✖</span> {{ result }}
+              </div>
+            {% endif %}
+          {% else %}
+            <div class="status-badge idle">
+              <span class="icon">⋯</span> Awaiting Input
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- OUTPUT IMAGE -->
+        {% if output_url %}
+          <div style="margin-top: 25px;">
+            <img src="{{ output_url }}"
+                 alt="SRD Result Image"
+                 style="
+                    max-width: 100%;
+                    border-radius: 18px;
+                    border: 1px solid rgba(255,255,255,0.15);
+                    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+                 ">
+          </div>
+        {% endif %}
+
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // =========================
+    // STATIC UPLOAD PREVIEW
+    // =========================
+    const fileInput = document.getElementById("file-upload");
+    const fileMeta = document.getElementById("file-meta");
+    const fileNameEl = document.getElementById("file-name");
+    const previewImg = document.getElementById("preview-img");
+    const clearBtn = document.getElementById("clear-btn");
+    const analyzeBtn = document.getElementById("analyze-btn");
+    const dropTitle = document.getElementById("drop-title");
+    const dropSub = document.getElementById("drop-sub");
+
+    function resetPreview() {
+      fileInput.value = "";
+      fileMeta.style.display = "none";
+      fileNameEl.textContent = "No file selected";
+      previewImg.removeAttribute("src");
+      analyzeBtn.textContent = "Analyze Image";
+      dropTitle.textContent = "Choose a file";
+      dropSub.textContent = "or drag and drop here";
+    }
+
+    fileInput.addEventListener("change", () => {
+      const file = fileInput.files && fileInput.files[0];
+      if (!file) {
+        resetPreview();
+        return;
+      }
+
+      fileNameEl.textContent = file.name;
+      const url = URL.createObjectURL(file);
+      previewImg.src = url;
+
+      fileMeta.style.display = "block";
+      analyzeBtn.textContent = `Analyze: ${file.name}`;
+      dropTitle.textContent = "File selected";
+      dropSub.textContent = "You can change it by selecting again";
+    });
+
+    clearBtn.addEventListener("click", resetPreview);
+
+
+    // =========================
+    // LIVE WEBCAM STREAM
+    // =========================
+    const btnCam = document.getElementById("btn-camera");
+    const btnSwitch = document.getElementById("btn-camera-switch");
+    const video = document.getElementById("video-stream");
+    const liveWrap = document.getElementById("live-wrap");
+    const placeholder = document.getElementById("video-placeholder");
+
+    let running = false;
+    let camIndex = 0; // for troubleshooting (0 or 1)
+
+    function startStream() {
+      // Add a query string to avoid caching
+      video.src = `/video_feed?cam=${camIndex}&t=${Date.now()}`;
+      liveWrap.style.display = "block";
+      placeholder.style.display = "none";
+      btnCam.textContent = "Stop Camera";
+      btnSwitch.style.display = "block";
+      running = true;
+    }
+
+    function stopStream() {
+      video.src = "";
+      liveWrap.style.display = "none";
+      placeholder.style.display = "grid";
+      btnCam.textContent = "Initialize Camera";
+      btnSwitch.style.display = "none";
+      running = false;
+    }
+
+    btnCam.addEventListener("click", () => {
+      if (!running) startStream();
+      else stopStream();
+    });
+
+    btnSwitch.addEventListener("click", () => {
+      // Toggle camera index 0 <-> 1
+      camIndex = (camIndex === 0) ? 1 : 0;
+      if (running) startStream();
+    });
+  </script>
+</body>
+</html>
