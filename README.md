@@ -156,11 +156,8 @@ If any item is missing: ❌ **NOT COMPLIANT**
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss proposed changes.
 
-## License
-[Specify your license here]
-
 ## Contact
-For questions or support, contact: [your-email@example.com]
+For questions or support, contact: [irfandanish386@gmail.com]
 
 ## Acknowledgments
 - YOLOv8 by Ultralytics
