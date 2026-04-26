@@ -75,7 +75,8 @@ def index():
 # REALTIME WEBCAM STREAM (MJPEG)
 # ==============================
 def gen_frames():
-    """Generator function for webcam frames with SRD detection overlay"""
+    """Generator function for webcam frames with SRD detection overlay.
+    Optimized for real-time performance with frame skipping and efficient encoding."""
     cap = cv2.VideoCapture(0)
 
     if not cap.isOpened():
@@ -85,15 +86,27 @@ def gen_frames():
             logger.error("No webcam found")
             return
 
+    # Set camera buffer to minimize lag
+    cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+    
+    frame_count = 0
+    skip_frames = 0  # Process every frame by default
+
     try:
         while True:
             success, frame = cap.read()
             if not success:
                 break
 
+            frame_count += 1
+            
+            # Skip frames if needed (helps with performance under heavy load)
+            if frame_count % (skip_frames + 1) != 0:
+                continue
+
             frame, _ = run_srd_frame(frame)
 
-            ret, buffer = cv2.imencode(".jpg", frame)
+            ret, buffer = cv2.imencode(".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, 85])
             if not ret:
                 continue
 
