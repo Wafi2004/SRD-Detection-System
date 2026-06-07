@@ -160,7 +160,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 For questions or support, contact: [wafiaffandi2004@gmail.com]
 
 ## 📄 Documentation
-- [View Project Report](REPORT%20PROJECT%20SPECIAL%20TOPIC%20CSC649.pdf)
+- [View Project Report](REPORT%20PROJECT%20SPECIAL%20TOPIC%20CSC649%20.pdf)
   
 ## Acknowledgments
 - YOLOv8 by Ultralytics
